@@ -473,8 +473,6 @@ class nagios::server (
   }
 
 
-  create_resources (nagios_service, { 'local-service' => $template_local_service }, $template_local_service_defaults)
-
   # Create all resources for nagios types
   create_resources (nagios_command, $commands)
   create_resources (nagios_contact, $contacts)
