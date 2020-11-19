@@ -27,18 +27,12 @@ class nagios::params {
     'nagios-plugins-disk',
     'nagios-plugins-file_age',
     'nagios-plugins-http',
-    'nagios-plugins-ide_smart',
-    'nagios-plugins-ifstatus',
-    'nagios-plugins-linux_raid',
     'nagios-plugins-load',
     'nagios-plugins-log',
     'nagios-plugins-mailq',
-    'nagios-plugins-mysql',
     'nagios-plugins-ntp',
     'nagios-plugins-perl',
-    'nagios-plugins-pgsql',
     'nagios-plugins-procs',
-    'nagios-plugins-sensors',
     'nagios-plugins-swap',
     'nagios-plugins-users',
   ]
@@ -53,7 +47,7 @@ class nagios::params {
       if ( $::operatingsystem != 'Fedora' and versioncmp($::operatingsystemrelease, '7') >= 0 ) {
         $nrpe_pid_file    = hiera('nagios::params::nrpe_pid_file','/run/nrpe/nrpe.pid')
         $cfg_template     = 'nagios/nagios-4.cfg.erb'
-} else {
+      } else {
         $nrpe_pid_file    = hiera('nagios::params::nrpe_pid_file','/var/run/nrpe/nrpe.pid')
         $cfg_template     = 'nagios/nagios.cfg.erb'
       }
@@ -74,10 +68,8 @@ class nagios::params {
           $python_2_vs_3_interpreter = '/usr/bin/python2'
         }
       }
-      @package { $nagios_plugins_packages:
-        ensure => installed,
-        tag    => $name,
-      }
+      ensure_packages($nagios_plugins_packages, { ensure => 'installed'})
+
     }
     'Gentoo': {
       $nrpe_package              = [ 'net-analyzer/nrpe' ]
